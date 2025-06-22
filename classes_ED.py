@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from collections.abc import Iterable
 
 class EstruturaLinear(ABC):
     @abstractmethod
@@ -87,3 +88,95 @@ class EstruturaLinear(ABC):
     def bubble_sort(self):
         """Ordena estrutura com bubble sort"""
         pass
+
+
+class Pilha(EstruturaLinear):
+    def __init__(self, iterable=None):
+        self._dados = []
+        if iterable is not None:
+            if not isinstance(iterable, Iterable):
+                raise TypeError("O argumento deve ser iterável")
+            for item in iterable:
+                self.push(item)
+    
+    def __len__(self):
+        return len(self._dados)
+    
+    def estrutura_vazia(self):
+        return len(self) == 0
+    
+    def push(self, item):
+        """Insere um item no topo da pilha"""
+        self._dados.append(item)
+    
+    def pop(self):
+        """Remove e retorna o item do topo da pilha"""
+        if self.estrutura_vazia():
+            raise IndexError("Stack underflow")
+        return self._dados.pop()
+    
+    def top(self):
+        """Retorna o item do topo sem remover"""
+        if self.estrutura_vazia():
+            raise IndexError("Stack underflow")
+        return self._dados[-1]
+    
+    # Implementações dos métodos abstratos
+    def inserir_topo(self, item):
+        raise NotImplementedError("Inserção no início não é suportada em Pilhas")
+    
+    def inserir_ultimo(self, item):
+        self.push(item)
+    
+    def remover_ultimo(self):
+        return self.pop()
+    
+    def obter_ultimo(self):
+        return self.top()
+    
+class Fila(EstruturaLinear):
+    def __init__(self, iterable=None):
+        self._dados = []
+        if iterable is not None:
+            if not isinstance(iterable, Iterable):
+                raise TypeError("O argumento deve ser iterável")
+            for item in iterable:
+                self.enqueue(item)
+    
+    def __len__(self):
+        return len(self._dados)
+    
+    def estrutura_vazia(self):
+        return len(self) == 0
+    
+    def enqueue(self, item):
+        """Insere um item no final da fila"""
+        self._dados.append(item)
+    
+    def dequeue(self):
+        """Remove e retorna o item do início da fila"""
+        if self.estrutura_vazia():
+            raise IndexError("Queue underflow")
+        return self._dados.pop(0)
+    
+    def front(self):
+        """Retorna o item do início sem remover"""
+        if self.estrutura_vazia():
+            raise IndexError("Queue underflow")
+        return self._dados[0]
+    
+    # Implementações dos métodos abstratos
+    
+    def inserir_ultimo(self, item):
+        self.enqueue(item)
+    
+    def remover_topo(self):
+        return self.dequeue()
+    
+    def obter_topo(self):
+        return self.front()
+    
+    def obter_ultimo(self):
+        if self.estrutura_vazia():
+            raise IndexError("Queue underflow")
+        return self._dados[-1]
